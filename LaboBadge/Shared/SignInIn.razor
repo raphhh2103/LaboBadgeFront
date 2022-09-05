@@ -1,0 +1,37 @@
+@using LaboBadge.Services
+@using LaboBadge.Models
+
+<form>
+   
+    <fieldset>
+    <legend>Sign in !!!!!!!!!!!!!!!!!!!!!!!!!!! </legend>
+    <div class="form-group row ">
+
+    </div>
+   
+    <div class="form-group">
+      <label for="exampleInputpseudo" class="form-label mt-4">pseudo</label>
+      <input type="text" @bind="userToken.Email" class="form-control" id="JeanBonBeurre" aria-describedby="pseudo" placeholder="enter pseudo">
+      <small id="pseudoHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+    </div>
+    <div class="form-group">
+      <label for="exampleInputPassword1"  class="form-label mt-4">Password</label>
+      <input type="password" class="form-control" @bind="userToken.Passwd" id="exampleInputPassword1" placeholder="Password">
+    </div>
+ 
+    <button type="button" class="btn btn-primary" @onclick = "CallSign" >Submit</button>
+ </fieldset>
+
+</form>
+
+@code{
+    User userToken = new User();
+    public string? email;
+    public string passwd;
+
+    private async void CallSign()
+    {
+        await UserServices.Signin(userToken.Email, userToken.Passwd);
+    }
+
+}
