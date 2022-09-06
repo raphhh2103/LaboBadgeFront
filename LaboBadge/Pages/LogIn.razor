@@ -1,11 +1,11 @@
-﻿@inject HttpClient httpClient
-@using Models
-
-
+﻿@page "/Log in"
+@using LaboBadge.Services
+@using LaboBadge.Models
+<h3>LogIn</h3>
 <form>
    
     <fieldset>
-    <legend>Sign in  NIQQQQQQQQQQQQQQQQQQQQQUUUUUUUUUUUUUUUEEEEEEEEEEEEE</legend>
+    <legend>Sign in !!!!!!!!!!!!!!!!!!!!!!!!!!! </legend>
     <div class="form-group row ">
 
     </div>
@@ -20,30 +20,17 @@
       <input type="password" class="form-control" @bind="user.Passwd" id="exampleInputPassword1" placeholder="Password">
     </div>
  
-    <button type="button" class="btn btn-primary" @onclick = "OnInitializedAsync" >Submit</button>
+    <button type="button" class="btn btn-primary" @onclick = "CallLogIn" >Submit</button>
  </fieldset>
 
 </form>
-
-
 @code {
-    private User user;
-
-
-    protected override async Task OnInitializedAsync()
+    User user = new User();
+    private async void CallLogIn()
     {
-        var postbody = new User();
+        await UserServices.LogIn(user.Email, user.Passwd);
 
-        using var response = await httpClient.PostAsJsonAsync("https://localhost:10000/User", postbody);
-
-        if (!response.IsSuccessStatusCode)
-        {
-            var errorMessage = response.ReasonPhrase;
-            Console.WriteLine($"there was an error ! {errorMessage}");
-            return;
-        }
-        var article = await response.Content.ReadFromJsonAsync<User>();
-
+        
 
     }
 
