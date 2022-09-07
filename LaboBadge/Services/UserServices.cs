@@ -6,7 +6,6 @@ using LaboBadge.Mapper;
 using Microsoft.AspNetCore.Components.WebAssembly;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using System.Net.Http.Headers;
-using LaboBadge.Storage;
 using Microsoft.JSInterop;
 
 namespace LaboBadge.Services
