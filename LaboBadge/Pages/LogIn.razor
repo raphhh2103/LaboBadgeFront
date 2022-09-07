@@ -1,6 +1,9 @@
 ﻿@page "/Log in"
 @using LaboBadge.Services
 @using LaboBadge.Models
+@inject LaboBadge.Storage.Storages st
+
+
 <h3>LogIn</h3>
 <form>
    
@@ -28,7 +31,7 @@
     User user = new User();
     private async void CallLogIn()
     {
-        await UserServices.LogIn(user.Email, user.Passwd);
+        await UserServices.LogIn(user.Email, user.Passwd, st );
 
         
 

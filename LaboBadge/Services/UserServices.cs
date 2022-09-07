@@ -43,7 +43,7 @@ namespace LaboBadge.Services
             }
         }
 
-        public static async Task LogIn(string email, string passwd)
+        public static async Task LogIn(string email, string passwd, Storages st)
         {
             User user = new User()
             {
@@ -91,7 +91,7 @@ namespace LaboBadge.Services
                    
                 };
                 //Console.WriteLine(token.Token);
-                Storages st = new Storages(responseUser.Email);
+                
                 st.SetValueStorage("token", lines.ToList()[2]);
 
             }
