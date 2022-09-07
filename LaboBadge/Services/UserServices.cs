@@ -15,10 +15,7 @@ namespace LaboBadge.Services
         private  readonly HttpClient _httpClient = new HttpClient();
         //private static readonly Storages _storages = new Storages();
         //private static readonly IAccessTokenProvider _tokenProvider = new IAccessTokenProvider();
-        public UserServices()
-        {
-
-        }
+    
       
         public  async Task Signin(string email, string passwd)
         {
@@ -47,7 +44,7 @@ namespace LaboBadge.Services
             }
         }
 
-        public  async Task LogIn(string email, string passwd)
+        public  async Task<string> LogIn(string email, string passwd )
         {
             User user = new User()
             {
@@ -95,15 +92,15 @@ namespace LaboBadge.Services
                    
                 };
                 //Console.WriteLine(token.Token);
-                
-                
+                string result = token.Token;
+                return result;
 
                // Storages.SetValueStorage("token", token.Token);
 
             }
             catch (HttpRequestException ex)
             {
-               Console.WriteLine(ex.Message);
+               return ex.Message;
             }
         }
     }

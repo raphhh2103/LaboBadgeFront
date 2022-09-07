@@ -1,7 +1,9 @@
-﻿@page "/Log in"
+﻿@page "/Log_in"
 @using LaboBadge.Services
 @using LaboBadge.Models
+@using LaboBadge.Utils
 @inject LaboBadge.Services.UserServices _userServices
+@inject Utils.SessionStorageAccessor _SessionStorage
 
 
 <h3>LogIn</h3>
@@ -15,7 +17,7 @@
    
     <div class="form-group">
       <label for="exampleInputpseudo" class="form-label mt-4">pseudo</label>
-      <input type="text" @bind="user.Email" class="form-control" id="JeanBonBeurre" aria-describedby="pseudo" placeholder="enter pseudo">
+      <input type="email" @bind="user.Email" class="form-control" id="JeanBonBeurre" aria-describedby="pseudo" placeholder="enter pseudo">
       <small id="pseudoHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
     </div>
     <div class="form-group">
@@ -29,11 +31,11 @@
 </form>
 @code {
     User user = new User();
-
+    string tkn = "";
     private async void CallLogIn()
     {
-        await _userServices.LogIn(user.Email, user.Passwd );
-
+        tkn=  await _userServices.LogIn(user.Email, user.Passwd );
+        await _SessionStorage.SetValueAsync("token", tkn);
 
     }
 

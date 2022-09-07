@@ -1,5 +1,6 @@
 using LaboBadge;
 using LaboBadge.Services;
+using LaboBadge.Utils;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.JSInterop;
@@ -15,7 +16,7 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 builder.Services.AddTransient(typeof(UserServices));
-builder.Services.AddTransient(typeof(IJSRuntime));
+builder.Services.AddScoped<SessionStorageAccessor>();
 //builder.Services.AddTransient(typeof(Storage));
 
 await builder.Build().RunAsync();
