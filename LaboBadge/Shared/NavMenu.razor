@@ -1,4 +1,7 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
+﻿@using LaboBadge.Utils
+@inject LaboBadge.Utils.SessionStorageAccessor _sessionStorage
+
+<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="">LaboBadge</a>
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
@@ -22,29 +25,58 @@
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="fetchdata">
                 <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
-            </NavLink> 
+            </NavLink>
+        </div>
+        @if (!logged)
+        {
+
+            <div class="nav-item px-3" style = "visibility: @visible" >
+                <NavLink class="nav-link" href="sign">
+                    <span class="oi oi-list-rich" aria-hidden="true"></span> sign
+                </NavLink>
             </div>
-            
             <div class="nav-item px-3">
-            <NavLink class="nav-link" href="sign">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> sign
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="Log in">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> log
-            </NavLink>
-        </div>
+                <NavLink class="nav-link" href="/Log_in">
+                    <span class="oi oi-list-rich" aria-hidden="true"></span> log
+                </NavLink>
+            </div>
+        }
+        else
+        {
+            <div>
+
+            </div>
+        }
     </nav>
 </div>
 
 @code {
     private bool collapseNavMenu = true;
+    private bool logged = false;
+    private string str;
 
+    private string visible = "visible";
     private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
-    private void ToggleNavMenu()
+
+
+    private async void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
+        if (!logged)
+        {
+            str = await _sessionStorage.GetValueAsync<string>("token");
+            if(str != null)
+            {
+                logged = true;
+
+
+            }
+        }
+        else
+        {
+            visible = "idden";
+            logged = false;
+        }
     }
 }
