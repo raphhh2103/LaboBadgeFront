@@ -1,4 +1,5 @@
 using LaboBadge;
+using LaboBadge.Storage;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
@@ -12,5 +13,6 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 //    .WithHeaders(HeaderNames.ContentType));
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+builder.Services.AddSingleton<Storages>();
 
 await builder.Build().RunAsync();

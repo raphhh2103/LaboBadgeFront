@@ -3,11 +3,17 @@ using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 using LaboBadge.Mapper;
+using Microsoft.AspNetCore.Components.WebAssembly;
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
+using System.Net.Http.Headers;
+using LaboBadge.Storage;
+
 namespace LaboBadge.Services
 {
     public static class UserServices
     {
         private static readonly HttpClient _httpClient = new HttpClient();
+        //private static readonly IAccessTokenProvider _tokenProvider = new IAccessTokenProvider();
         
 
         public static async Task Signin(string email, string passwd)
@@ -51,46 +57,46 @@ namespace LaboBadge.Services
         
             try
             {
-                Console.WriteLine(data.Headers+" aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaah");
                  var response =  await _httpClient.PostAsync("Https://localhost:10000/Account", data);
                 var  res = await response.Content.ReadAsStringAsync();
-                //var  res2 = await response.Content.ReadFromJsonAsync<string>();
-                Console.WriteLine(res + "fpuuuuuuuuuuuuuuuuuuuuuuuuuutttttttttttttttttttteeeeeeeeeeeee");
                 IEnumerable<string> lines = res.Split( ':','{', '}');
                 var  t = JsonSerializer.Serialize(res);
-
-                foreach (var kvp in lines)
-                {
-                    //Console.WriteLine($" key :{kvp.Key} value: {kvp.Value}");
-                    Console.WriteLine(kvp +" NIIIIIIIIIIIIIIQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ");
-                }
-                //Console.WriteLine(response.Content.ReadAsStringAsync().Result + " hoooooooooooooooooooooo");
-                //string responseBody = await response.Content.ReadAsStringAsync();
                 User responseUser = await _httpClient.GetFromJsonAsync<User>($"Https://localhost:10000/User/{user.Email}");
-                //Console.WriteLine(responseUser.Content.ReadAsStringAsync().Result + " UUUUUUUUUSssssssssseeeeeeeeerrrrrrrrr");
-               //Object js =  responseUser.Content.ReadAsStringAsync().Result;
-                //Console.WriteLine(js + " ++++++++++++++++++++++++++++++++++++ ");
-               Console.WriteLine(responseUser.IdUser);
-                //Console.WriteLine(user1.Email);
-                //User user2 = JsonSerializer.Deserialize<User>(js);
-                //foreach (var item in js)
+                //User responseUser2 = await _httpClient.GetFromJsonAsync<User>($"Https://localhost:10000/User/{user.Email}");
+                ////_httpClient.
+                //var requestMessage = new HttpRequestMessage()
                 //{
-                    //Console.WriteLine(item);
-                //}
+                //    Method = new HttpMethod("GET"),
+                //    RequestUri = new Uri($"Https://localhost:10000/User/{email}"),
+                //    Content = JsonContent.Create(new User
+                //    {
+                //        Email = email,
+                //        Passwd=passwd,
 
-                //UserToken token = new UserToken()
-                //{
-                //    Email = user.Email,
-                //    Token = response.Content.ReadAsStringAsync().Result,
-                //    Id = 0,
-                //    IsOwner = true
+                //    })
+                   
+
                 //};
+                //requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", lines.ToList()[2]);
+                //var testResponse = await _httpClient.SendAsync(requestMessage);
+                //Console.WriteLine(testResponse);
+                //var tokenResult = await TokenProvider.RequestAccesToken();
+                UserToken token = new UserToken()
+                {
+                    Token = lines.ToList()[2],
+                    Email = responseUser.Email,
+                    IsOwner = true,
+                    Id = responseUser.IdUser,
+                    Rule= responseUser.Rule
+                   
+                };
                 //Console.WriteLine(token.Token);
+                Storages st = new Storages(responseUser.Email);
+                st.SetValueStorage("token", lines.ToList()[2]);
 
             }
             catch (HttpRequestException ex)
             {
-
                Console.WriteLine(ex.Message);
             }
         }
