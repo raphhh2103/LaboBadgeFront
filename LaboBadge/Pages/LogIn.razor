@@ -1,7 +1,7 @@
 ﻿@page "/Log in"
 @using LaboBadge.Services
 @using LaboBadge.Models
-@inject LaboBadge.Storage.Storages st
+@inject LaboBadge.Services.UserServices _userServices
 
 
 <h3>LogIn</h3>
@@ -29,11 +29,11 @@
 </form>
 @code {
     User user = new User();
+
     private async void CallLogIn()
     {
-        await UserServices.LogIn(user.Email, user.Passwd, st );
+        await _userServices.LogIn(user.Email, user.Passwd );
 
-        
 
     }
 

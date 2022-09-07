@@ -1,6 +1,6 @@
 @using LaboBadge.Services
 @using LaboBadge.Models
-@inject LaboBadge.Storage.Storages st
+@inject LaboBadge.Services.UserServices _userServices
 
 <form>
    
@@ -30,9 +30,6 @@
     public string? email;
     public string passwd;
 
-    private async void CallSign()
-    {
-        await UserServices.Signin(userToken.Email, userToken.Passwd);
-    }
+    private async void CallSign() => await _userServices.Signin(userToken.Email, userToken.Passwd);
 
 }

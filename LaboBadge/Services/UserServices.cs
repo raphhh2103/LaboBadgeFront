@@ -7,16 +7,21 @@ using Microsoft.AspNetCore.Components.WebAssembly;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using System.Net.Http.Headers;
 using LaboBadge.Storage;
+using Microsoft.JSInterop;
 
 namespace LaboBadge.Services
 {
-    public static class UserServices
+    public  class UserServices
     {
-        private static readonly HttpClient _httpClient = new HttpClient();
+        private  readonly HttpClient _httpClient = new HttpClient();
+        //private static readonly Storages _storages = new Storages();
         //private static readonly IAccessTokenProvider _tokenProvider = new IAccessTokenProvider();
-        
+        public UserServices()
+        {
 
-        public static async Task Signin(string email, string passwd)
+        }
+      
+        public  async Task Signin(string email, string passwd)
         {
             User user = new User()
             {
@@ -43,7 +48,7 @@ namespace LaboBadge.Services
             }
         }
 
-        public static async Task LogIn(string email, string passwd, Storages st)
+        public  async Task LogIn(string email, string passwd)
         {
             User user = new User()
             {
@@ -92,7 +97,9 @@ namespace LaboBadge.Services
                 };
                 //Console.WriteLine(token.Token);
                 
-                st.SetValueStorage("token", lines.ToList()[2]);
+                
+
+               // Storages.SetValueStorage("token", token.Token);
 
             }
             catch (HttpRequestException ex)
