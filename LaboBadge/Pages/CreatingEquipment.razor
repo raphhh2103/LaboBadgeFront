@@ -1,0 +1,48 @@
+﻿@page "/Creating_equipment"
+@inject LaboBadge.Utils.SessionStorageAccessor _sessionStorage
+@inject LaboBadge.Services.EquipmentServices _equipmentService
+@using LaboBadge.Models
+@inject HttpClient _httpClient
+<h3>CreatingEquipment</h3>
+<form>
+    <fieldset>
+        <legend>Legend</legend>
+
+        <div class="form-group">
+            <label for="exampleInputEmail1" class="form-label mt-4">equipment type</label>
+            <input type="text" class="form-control" @bind="@equipment.Type"  id="input_type" aria-describedby="emailHelp" placeholder="equipement type">
+        
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1" class="form-label mt-4">effect</label>
+            <input type="text" class="form-control" @bind="@equipment.Effect" id="input_effect" aria-describedby="emailHelp" placeholder="equipment effect">
+          
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1" class="form-label mt-4">numbers parts required</label>
+            <input type="text" class="form-control" @bind="@equipment.NbPartsRequired" id="input_nb_parts_required" aria-describedby="emailHelp" placeholder="nb parts required">
+          
+        </div>
+
+ @*       <div class="form-group">
+            <label for="exampleTextarea" class="form-label mt-4">Example textarea</label>
+            <textarea class="form-control" id="exampleTextarea" rows="3"></textarea>
+        </div>*@
+  
+        <button  @onclick="callCreatingService" class="btn btn-primary">Submit</button>
+    </fieldset>
+</form>
+
+
+@code {
+    private EquipmentModels equipment = new EquipmentModels();
+    private string tkn;
+    private async Task callCreatingService()
+    {
+
+        tkn = await _sessionStorage.GetValueAsync<string>("token");
+       await _equipmentService.CreatingEquipment(equipment, tkn);
+        //await _httpClient.PostAsJsonAsync<EquipmentModels>("https://localhost:10000/Equipment", equipment);
+
+    }
+}

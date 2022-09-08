@@ -1,6 +1,6 @@
 ﻿namespace LaboBadge.Models
 {
-    public class Equipment
+    public class EquipmentModels
     {
         public int IdEquipment { get; set; }
         public string Type { get; set; }

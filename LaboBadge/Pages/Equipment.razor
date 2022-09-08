@@ -1,0 +1,49 @@
+﻿@page "/Equipment"
+@inject Utils.SessionStorageAccessor _SessionStorage
+@inject LaboBadge.Services.EquipmentServices _EquipmentService
+@inject NavigationManager uriHelper;
+@inject HttpClient _HttpClient
+@using LaboBadge.Services
+@using LaboBadge.Models
+@using LaboBadge.Utils
+@using System.Threading;
+<h3>Equipment</h3>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">type </th>
+            <th scope="col">Effect</th>
+            <th scope="col">NbPartsRequired</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if(equipments != null)
+        @for (int i = 0; i < equipments.Length - 1; i++)
+        {
+            <tr class="table-active">
+                <td>@equipments[i].Type</td>
+                <td>@equipments[i].Effect</td>
+                <td>@equipments[i].NbPartsRequired</td>
+            </tr>
+            }
+        else
+        {
+            AllEquipementCall();
+        }
+
+    </tbody>
+</table>
+@code {
+
+    private EquipmentModels[]? equipments;
+    private string tkn;
+    protected override async Task OnInitializedAsync() => this.AllEquipementCall();
+    private async Task AllEquipementCall()
+    {
+        tkn = await _SessionStorage.GetValueAsync<string>("key");
+        equipments = await _EquipmentService.GetAllEquipment(tkn);
+        //equipments = await _EquipmentService.GetAllEquipment(tkn);
+
+    }
+}
