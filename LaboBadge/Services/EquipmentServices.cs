@@ -31,7 +31,12 @@ namespace LaboBadge.Services
             };
             requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
              var result = await _httpClient.SendAsync(requestMessage);
-            Console.WriteLine(equipmentModels);
+            foreach (var item in equipmentModels)
+            {
+
+            //Console.WriteLine(item.Effect);
+            //Console.WriteLine(result.Content+" contennnnnnnnnnnnntttttttttt");
+            }
             return equipmentModels;
         }
         public async Task CreatingEquipment(EquipmentModels models,string token)

@@ -18,6 +18,8 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.
 builder.Services.AddTransient(typeof(UserServices));
 builder.Services.AddScoped<SessionStorageAccessor>();
 builder.Services.AddTransient(typeof(EquipmentServices));
+builder.Services.AddTransient(typeof(ChampServices));
+builder.Services.AddTransient(typeof(BasicStatisticServices));
 //builder.Services.AddTransient(typeof(Storage));
 
 await builder.Build().RunAsync();

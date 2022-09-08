@@ -1,0 +1,78 @@
+﻿@page "/Champ"
+@inject Utils.SessionStorageAccessor _sessionStorage
+@inject LaboBadge.Services.ChampServices _champService
+@inject LaboBadge.Services.BasicStatisticServices _basicStatisticService
+@using LaboBadge.Services
+@using LaboBadge.Models
+@using LaboBadge.Utils
+
+<h3>ChampPage</h3>
+@if (champs != null)
+    @for (int i = 0; i < champs.Length; i++)
+    {
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">@champs[i].Name </th>
+                    <th scope="col">@champs[i].Skills</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="table-active">
+                    <td>@champs[i].Affinity.Strong</td>
+                    <td>@champs[i].Affinity.Weak</td>
+                    @for (int j = 0; j < @champs[i].Skills.Length; j++)
+                    {
+                        <td>@champs[i].Skills[j].Name</td>
+                        <td>@champs[i].Skills[j].Effect</td>
+                        <td>@champs[i].Skills[j].Description</td>
+
+                    }
+                    <td>@champs[i].BasicStatisticId</td>
+                             @await foreach(var item in _basicStatisticService.GetOne(tkn, champs[i].BasicStatisticId))
+                        {
+                        <td>item.Atk</td>
+                        <td>item.Def</td>
+                        <td>item.CriticakDamage</td>
+                        <td>item.CriticalRate</td>
+                        <td>item.Hp</td>
+                        <td>item.Precision</td>
+                        <td>item.Resistor</td>
+                        <td>item.Vit</td>
+                        }
+                </tr>
+            </tbody>
+        </table>
+    }
+else
+{
+    AllChampCall();
+    @*OnInitializedAsync();*@
+}
+
+@code {
+    private Champ[]? champs;
+    private Skills?[] skills;
+    private string tkn;
+    protected override async Task OnInitializedAsync() => await this.AllChampCall();
+    private BasicStatistic[] basicStatistic;
+    private async Task AllChampCall()
+    {
+        tkn = await _sessionStorage.GetValueAsync<string>("key");
+
+        champs = await _champService.GetAllChamp(tkn);
+
+        for (int i = 0; i < champs.Length; i++)
+        {
+
+            if (champs[i].BasicStatisticId == 0)
+            {
+                await _champService.WaitAndSee();
+            }
+
+            basicStatistic[i] = await _basicStatisticService.GetOne(tkn, champs[i].BasicStatisticId);
+        }
+    }
+
+}

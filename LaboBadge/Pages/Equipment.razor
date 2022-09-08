@@ -19,7 +19,7 @@
     </thead>
     <tbody>
         @if(equipments != null)
-        @for (int i = 0; i < equipments.Length - 1; i++)
+        @for (int i = 0; i < equipments.Length ; i++)
         {
             <tr class="table-active">
                 <td>@equipments[i].Type</td>
@@ -29,7 +29,8 @@
             }
         else
         {
-            AllEquipementCall();
+           AllEquipementCall();
+            @*OnInitializedAsync();*@
         }
 
     </tbody>
@@ -38,11 +39,12 @@
 
     private EquipmentModels[]? equipments;
     private string tkn;
-    protected override async Task OnInitializedAsync() => this.AllEquipementCall();
+    protected override async Task OnInitializedAsync() => await this.AllEquipementCall();
     private async Task AllEquipementCall()
     {
         tkn = await _SessionStorage.GetValueAsync<string>("key");
         equipments = await _EquipmentService.GetAllEquipment(tkn);
+        Console.WriteLine("apres requete ! ");
         //equipments = await _EquipmentService.GetAllEquipment(tkn);
 
     }
