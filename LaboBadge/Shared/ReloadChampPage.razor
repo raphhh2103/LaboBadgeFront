@@ -1,0 +1,129 @@
+﻿@inject Utils.SessionStorageAccessor _sessionStorage
+@inject LaboBadge.Services.ChampServices _champService
+@inject LaboBadge.Services.BasicStatisticServices _basicStatisticService
+@inject NavigationManager uriHelper;
+@using LaboBadge.Pages
+@using LaboBadge.Services
+@using LaboBadge.Models
+@using LaboBadge.Utils
+
+@if (champs != null )
+
+    @for (int i = 0; i < champs.Length; i++)
+    {
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Name </th>
+                    <th scope="col">Skills</th>
+                    <th scope="col"> coucou</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="table-active">
+                    <td>@champs[i].Affinity.Strong</td>
+                    <td>@champs[i].Affinity.Weak</td>
+                    @for (int j = 0; j < @champs[i].Skills.Length; j++)
+                    {
+                        <td>@champs[i].Skills[j].Name</td>
+                        <td>@champs[i].Skills[j].Effect</td>
+                        <td>@champs[i].Skills[j].Description</td>
+
+                    }
+                    <td>@champs[i].BasicsStatisticsId</td>
+                  @for(int k =0; k< basicStatistic.Length;k++){
+
+                        <td>@basicStatistic[k].Atk</td>
+                        <td>@basicStatistic[k].Def</td>
+                        <td>@basicStatistic[k].CriticakDamage</td>
+                        <td>@basicStatistic[k].CriticalRate</td>
+                        <td>@basicStatistic[k].Hp</td>
+                        <td>@basicStatistic[k].Precision</td>
+                        <td>@basicStatistic[k].Resistor</td>
+                        <td>@basicStatistic[k].Vit</td>
+                  }
+                </tr>
+            </tbody>
+        </table>
+    }
+else
+{
+    @*call();*@
+    @*OnAfterRender(false);*@
+    @*OnInitializedAsync();*@
+}
+@code {
+    public Champ[]? champs;
+    public Skills[]? skills;
+    public string tkn;
+    public BasicStatistic[] basicStatistic;
+    public async Task AllChampCall()
+    {
+        tkn = await _sessionStorage.GetValueAsync<string>("token");
+        //Champ ch = new Champ()
+        //    {
+        //        Name = " theodor",
+        //        Affinity = new AffinityChamp(),
+        //        BasicsStatisticsId = 3,
+        //        @Skills = new Skills[0]
+        //    };
+        //champs = new Champ[] { ch };
+        Console.WriteLine(tkn);
+        champs = await _champService.GetAllChamp(tkn);
+        Console.WriteLine(champs.Length);
+        await GetStat();
+
+    }
+    private async Task GetStat()
+    {
+        basicStatistic = new BasicStatistic[champs.Length - 1];
+        for (int i = 0; i < champs.Length-1; i++)
+        {
+
+            //if (champs[i].BasicsStatisticsId == 0)
+            //{
+            //    await _champService.WaitAndSee();
+            //}
+
+            Console.WriteLine(i + " iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
+            basicStatistic[i] = await /*Task.Run(()=>*/ _basicStatisticService.GetOne(tkn, champs[i].BasicsStatisticsId)/*)*/;
+        }
+
+    }
+    protected override async Task OnInitializedAsync() 
+    {
+        await AllChampCall(); await GetStat();
+
+    }/* => await Task.Run(() => this.AllChampCall())=> await Task.Run(()=>GetStat());*/
+    //protected override async Task OnInitializedAsync() => await Task.Run(() => this.AllChampCall()) => await Task.Run(()=>GetStat());
+    //protected override void OnAfterRender(bool firstRender)
+    //{
+    //    if (firstRender)
+    //    {
+    //        var timer = new Timer(new TimerCallback(_ =>
+    //        {
+    //            uriHelper.NavigateTo(uriHelper.Uri, forceLoad: true);
+    //        }), null, 2000, 2000);
+    //    }
+    //}
+
+
+}
+
+@*@code{
+    private bool load = true;
+    private string? tkn;
+    private Champ[]? champs;
+    private Skills[]? skills;
+    private BasicStatistic[]? basicStatistic;
+
+
+    private async Task call() {
+        await Task.Run(() =>chmpPage.AllChampCall());
+        tkn = chmpPage.tkn;
+        champs = chmpPage.champs;
+        skills = chmpPage.skills;
+        basicStatistic = chmpPage.basicStatistic;
+    }
+}*@
+

@@ -15,7 +15,8 @@ namespace LaboBadge.Services
             champs = await _httpClient.GetFromJsonAsync<Champ[]>("https://localhost:10000/Champ");
             foreach (var item in champs)
             {
-                Console.WriteLine(item.BasicStatisticId +" idddddddddddddddddddddddddddddd");
+
+                Console.WriteLine(item.BasicsStatisticsId + " idddddddddddddddddddddddddddddd");
                 //foreach (var item2 in item.Skills)
                 //{
                 //    Console.WriteLine(item2.Name);  

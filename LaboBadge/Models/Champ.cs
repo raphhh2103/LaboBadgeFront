@@ -5,7 +5,7 @@
         public int IdChamp { get; set; }
 
         public string Name { get; set; }
-        public int BasicStatisticId { get; set; }
+        public int BasicsStatisticsId { get; set; }
         public AffinityChamp Affinity { get; set; }
         public Skills[] Skills { get; set; }
 
